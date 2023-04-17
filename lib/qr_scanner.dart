@@ -1,11 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:qrscanner/historyPage.dart';
 import 'package:qrscanner/overlay.dart';
 import 'package:qrscanner/result_screen.dart';
 import 'constant.dart';
 
 class QRScanner extends StatefulWidget {
-  const QRScanner({Key? key}) : super(key: key);
+
+  QRScanner({Key? key}) : super(key: key);
 
   @override
   State<QRScanner> createState() => _QRScannerState();
@@ -31,9 +34,14 @@ class _QRScannerState extends State<QRScanner> {
 
     return Scaffold(
       backgroundColor: bgColor,
-      drawer: const Drawer(),
       appBar: AppBar(
         actions:[
+          IconButton(onPressed:(){
+
+            Navigator.push(context,MaterialPageRoute(builder: (context)=> HistoryPage()));
+
+            //Change the icon colour according to true or flash.
+          },icon:Icon(Icons.history, color: Colors.grey)),
           //Toggle torch function
           IconButton(onPressed:(){
             setState(() {
@@ -109,6 +117,8 @@ class _QRScannerState extends State<QRScanner> {
                           //To pass the value and navigate to ResultScreen  and show the result
                           Navigator.push(context,MaterialPageRoute(builder: (context)=> ResultScreen(closeScreen: closeScreen,code:code)));
 
+
+
                         }
                       }
                   ),
@@ -122,6 +132,7 @@ class _QRScannerState extends State<QRScanner> {
               child:
               Text("Developed By Group 10 - BTPR2043",
                   style: TextStyle(
+                    fontFamily: 'Pacifico',
                     color: Colors.black87,
                     fontSize:14,
                     letterSpacing: 1.0,
@@ -133,3 +144,5 @@ class _QRScannerState extends State<QRScanner> {
     );
   }
 }
+
+
