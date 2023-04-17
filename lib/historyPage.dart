@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'constant.dart';
 
 class HistoryPage extends StatefulWidget {
   @override
@@ -16,16 +17,18 @@ class _HistoryPageState extends State<HistoryPage> {
 
 
   @override
+  //Run once on this page
   void initState() {
     super.initState();
     getHistory();
   }
 
+  //Get the file from the firestore and insert to the list.
   Future<void> getHistory() async {
     QuerySnapshot querySnapshot = await historyRefs.get();
     List<QueryDocumentSnapshot> documents = querySnapshot.docs;
     documents.forEach((document) {
-      String qrhistory = document['qrhistory'];
+      String qrhistory = document[fieldName];
       setState(() {
         historyList.add(qrhistory);
       });
@@ -54,6 +57,7 @@ class _HistoryPageState extends State<HistoryPage> {
 
       ),
 
+      //Create listview in the app
       body: ListView.builder(
         itemCount: historyList.length,
         itemBuilder: (BuildContext context, int index) {
