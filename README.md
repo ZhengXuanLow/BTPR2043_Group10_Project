@@ -1,4 +1,4 @@
-#Introducing QRScanner: "An ad-less QRScanner with history function":
+# Introducing QRScanner: "An ad-less QRScanner with history function":
 
 Are you tired of QRScanner apps that bombard you with ads? Look no further! Our app is completely ad-free, and has all the features you need for a smooth QR scanning experience.
 
