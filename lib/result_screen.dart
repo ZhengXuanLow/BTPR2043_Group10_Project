@@ -6,29 +6,34 @@ import 'constant.dart';
 import 'package:qrscanner/qr_scanner.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 
-class ResultScreen extends StatelessWidget {
+class ResultScreen extends StatefulWidget {
 
   //Set up some variable to use
   final String code;
   final Function() closeScreen;
-  FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-
-  //Pass the value
   ResultScreen({super.key,required this.closeScreen,required this.code});
-  //createData(code);
 
   @override
+  State<ResultScreen> createState() => _ResultScreenState();
+}
+
+class _ResultScreenState extends State<ResultScreen> {
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  //createData(code);
+  @override
   Widget build(BuildContext context) {
-    createData(code);
+    createData(widget.code);
     return Scaffold(
       backgroundColor: bgColor,
       appBar: AppBar(
         leading: IconButton
           (onPressed: (){
-            closeScreen();
+            widget.closeScreen();
             Navigator.pop(context);
         },
             icon:const Icon
@@ -51,7 +56,7 @@ class ResultScreen extends StatelessWidget {
             //Show QR Code here
 
             QrImage(
-                data: code, //pass the code here
+                data: widget.code, //pass the code here
                 size:150,
                 version: QrVersions.auto),
 
@@ -68,7 +73,7 @@ class ResultScreen extends StatelessWidget {
                 height:10
             ),
 
-            Text("$code",
+            Text("${widget.code}",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 16,
@@ -83,37 +88,81 @@ class ResultScreen extends StatelessWidget {
             SizedBox(
               width: MediaQuery.of(context).size.width-100,
               height: 48,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 55.0,
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                      fixedSize: Size(180, 50),
+                    ),
 
-                onPressed: (){
-                  //onTap Copy to Clipboard
-                  Clipboard.setData(ClipboardData(text:code));
-                  Alert(
-                    context: context,
-                    type: AlertType.success,
-                    title: "Copied to the clipboard.",
-                    desc: "$code have copied to the clipboard.",
-                    buttons: [
-                      DialogButton(
-                        child: Text(
-                          "Ok",
-                          style: TextStyle(color: Colors.black54, fontSize: 20),
-                        ),
-                        onPressed: () => Navigator.pop(context),
-                        width: 120,
-                      )
-                    ],
-                  ).show();
-                }, child:
-              Text("Copy",
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.black87,
-                    letterSpacing: 1.0,
-                  )),),
+
+                    onPressed: () async {
+                      String url = widget.code;
+                      final uri = Uri.parse(url);
+
+                      if (await canLaunchUrl(uri))
+                        {
+                          await launchUrl(uri);
+
+                        }else {
+                        Clipboard.setData(ClipboardData(text:widget.code));
+                        Alert(
+                          context: context,
+                          type: AlertType.error,
+                          title: "This is not a link.",
+                          desc: "The system have already copy ${widget.code} to cilpbaord for further use.",
+                          buttons: [
+                            DialogButton(
+                              child: Text(
+                                "Ok",
+                                style: TextStyle(color: Colors.black54, fontSize: 20),
+                              ),
+                              onPressed: () => Navigator.pop(context),
+                              width: 120,
+                            )
+                          ],
+                        ).show();
+                    }
+                      },
+
+                    child:
+                  Text("Open in Browser",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.black87,
+                        letterSpacing: 1.0,
+                      )),),
+
+                  IconButton(onPressed:(){
+                    setState(() {
+                      //onTap Copy to Clipboard
+                      Clipboard.setData(ClipboardData(text:widget.code));
+                      Alert(
+                        context: context,
+                        type: AlertType.success,
+                        title: "Copied to the clipboard.",
+                        desc: "${widget.code} have copied to the clipboard.",
+                        buttons: [
+                          DialogButton(
+                            child: Text(
+                              "Ok",
+                              style: TextStyle(color: Colors.black54, fontSize: 20),
+                            ),
+                            onPressed: () => Navigator.pop(context),
+                            width: 120,
+                          )
+                        ],
+                      ).show();
+                    });
+
+                  },icon:Icon(Icons.copy, color: Colors.blue)),
+                ],
+              ),
             )
 
           ]

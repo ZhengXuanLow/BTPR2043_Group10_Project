@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:qrscanner/historyPage.dart';
 import 'package:qrscanner/overlay.dart';
 import 'package:qrscanner/result_screen.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'constant.dart';
+
 
 class QRScanner extends StatefulWidget {
 
@@ -35,7 +38,46 @@ class _QRScannerState extends State<QRScanner> {
     return Scaffold(
       backgroundColor: bgColor,
       appBar: AppBar(
+
+        leading: IconButton
+          (onPressed: (){
+
+          Alert(
+            context: context,
+            type: AlertType.warning,
+            title: "Exit?",
+            desc: "Are you sure to exit?",
+            buttons: [
+              DialogButton(
+                child: Text(
+                  "Yes",
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+                //onPressed then quit the app.
+                onPressed: () => SystemNavigator.pop(),
+                color: Color.fromRGBO(0, 179, 134, 1.0),
+              ),
+              DialogButton(
+                child: Text(
+                  "No",
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+                onPressed: () => Navigator.pop(context),
+                gradient: LinearGradient(colors: [
+                  Color.fromRGBO(189, 2, 2, 1.0),
+                  Color.fromRGBO(189, 2, 2, 1.0)
+                ]),
+              )
+            ],
+          ).show();
+
+        },
+            icon:const Icon
+              (Icons.exit_to_app,
+              color: Colors.black87,)),
+
         actions:[
+
           IconButton(onPressed:(){
 
             Navigator.push(context,MaterialPageRoute(builder: (context)=> HistoryPage()));
@@ -58,14 +100,20 @@ class _QRScannerState extends State<QRScanner> {
             controller.switchCamera();
           },icon:Icon(Icons.camera_front, color: isFrontCamera ? Colors.blue:Colors.grey)),
         ],
+
         iconTheme: IconThemeData(color: Colors.black87),
         centerTitle: true,
+
+
+
         title: Text("QRScanner",
             style: TextStyle(
               color: Colors.black87,
               fontWeight:FontWeight.bold,
               letterSpacing: 1.0,
             )),
+
+
       ),
 
       body: Container(

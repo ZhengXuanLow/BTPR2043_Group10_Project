@@ -48,6 +48,45 @@ class _HistoryPageState extends State<HistoryPage> {
               (Icons.arrow_back_ios_new_rounded,
               color: Colors.black87,)),
         centerTitle: true,
+
+        actions:[
+
+          IconButton(onPressed:(){
+
+            Alert(
+              context: context,
+              type: AlertType.warning,
+              title: "Delete",
+              desc: "Are you sure to delete all the history?",
+              buttons: [
+                DialogButton(
+                  child: Text(
+                    "Yes",
+                    style: TextStyle(color: Colors.white, fontSize: 20),
+                  ),
+                  //onPressed then delete the history
+                  onPressed: () => SystemNavigator.pop(),
+                  color: Color.fromRGBO(0, 179, 134, 1.0),
+                ),
+                DialogButton(
+                  child: Text(
+                    "No",
+                    style: TextStyle(color: Colors.white, fontSize: 20),
+                  ),
+                  onPressed: () => Navigator.pop(context),
+                  gradient: LinearGradient(colors: [
+                    Color.fromRGBO(189, 2, 2, 1.0),
+                    Color.fromRGBO(189, 2, 2, 1.0)
+                  ]),
+                )
+              ],
+            ).show();
+
+            //Change the icon colour according to true or flash.
+          },icon:Icon(Icons.delete, color: Colors.grey)),
+
+        ],
+
         title: Text("History",
             style: TextStyle(
               color: Colors.black87,
