@@ -83,7 +83,6 @@ class _QRScannerState extends State<QRScanner> {
             //Go to history page
             Navigator.push(context,MaterialPageRoute(builder: (context)=> HistoryPage()));
 
-            //Change the icon colour according to true or flash.
           },icon:Icon(Icons.history, color: Colors.grey)),
           //Toggle torch function
           IconButton(onPressed:(){

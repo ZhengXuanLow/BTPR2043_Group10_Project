@@ -11,7 +11,6 @@ void createData(String code)
   firestore.collection(collectionName).add(dataToSave);
 }
 
-
   Future<void> deleteCollection() async {
     // Get a reference to the collection
     CollectionReference collectionRef = FirebaseFirestore.instance.collection(

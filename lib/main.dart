@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:qrscanner/qr_scanner.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-import '';
-
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
