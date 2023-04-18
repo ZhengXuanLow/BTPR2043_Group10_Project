@@ -27,7 +27,6 @@ class _ResultScreenState extends State<ResultScreen> {
   //createData(code);
   @override
   Widget build(BuildContext context) {
-    createData(widget.code);
     return Scaffold(
       backgroundColor: bgColor,
       appBar: AppBar(
@@ -172,3 +171,5 @@ class _ResultScreenState extends State<ResultScreen> {
     );
   }
 }
+
+

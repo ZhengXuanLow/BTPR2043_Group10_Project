@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
+import 'package:qrscanner/qr_scanner.dart';
+import 'package:qrscanner/result_screen.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'constant.dart';
+import 'crud_function.dart';
 
 class HistoryPage extends StatefulWidget {
   @override
@@ -65,7 +68,27 @@ class _HistoryPageState extends State<HistoryPage> {
                     style: TextStyle(color: Colors.white, fontSize: 20),
                   ),
                   //onPressed then delete the history
-                  onPressed: () => SystemNavigator.pop(),
+                  onPressed: ()  {
+                    deleteCollection();
+                    historyList.clear();
+                    Navigator.pop(context);
+                    Alert(
+                      context: context,
+                      type: AlertType.success,
+                      title: "Success",
+                      desc: "All the history deleted.",
+                      buttons: [
+                        DialogButton(
+                          child: Text(
+                            "Ok",
+                            style: TextStyle(color: Colors.black54, fontSize: 20),
+                          ),
+                          onPressed: () => Navigator.push(context,MaterialPageRoute(builder: (context)=> QRScanner())),
+                          width: 120,
+                        )
+                      ],
+                    ).show();
+                    },
                   color: Color.fromRGBO(0, 179, 134, 1.0),
                 ),
                 DialogButton(
@@ -104,28 +127,17 @@ class _HistoryPageState extends State<HistoryPage> {
           return ListTile(
             title: Text(history),
             onTap: () {
-              //onTap Copy to Clipboard
-              Alert(
-                context: context,
-                type: AlertType.success,
-                title: "Copied to the clipboard.",
-                desc: "$history have copied to the clipboard.",
-                buttons: [
-                  DialogButton(
-                    child: Text(
-                      "Ok",
-                      style: TextStyle(color: Colors.black54, fontSize: 20),
-                    ),
-                    onPressed: () => Navigator.pop(context),
-                    width: 120,
-                  )
-                ],
-              ).show();
-              Clipboard.setData(ClipboardData(text:history));
+              //navigate to result_screen with history detail.
+              Navigator.push(context,MaterialPageRoute(builder: (context)=> ResultScreen(closeScreen: closeScreen,code:history)));
             },
           );
         },
       ),
     );
   }
+}
+
+void closeScreen()
+{
+
 }

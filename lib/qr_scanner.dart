@@ -7,6 +7,7 @@ import 'package:qrscanner/overlay.dart';
 import 'package:qrscanner/result_screen.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'constant.dart';
+import 'crud_function.dart';
 
 
 class QRScanner extends StatefulWidget {
@@ -79,7 +80,7 @@ class _QRScannerState extends State<QRScanner> {
         actions:[
 
           IconButton(onPressed:(){
-
+            //Go to history page
             Navigator.push(context,MaterialPageRoute(builder: (context)=> HistoryPage()));
 
             //Change the icon colour according to true or flash.
@@ -161,11 +162,11 @@ class _QRScannerState extends State<QRScanner> {
 
                           //Set to true when the scan is complete
                           isScanComplete = true;
+                          //Insert to fireStore
+                          createData(code);
 
                           //To pass the value and navigate to ResultScreen  and show the result
                           Navigator.push(context,MaterialPageRoute(builder: (context)=> ResultScreen(closeScreen: closeScreen,code:code)));
-
-
 
                         }
                       }
